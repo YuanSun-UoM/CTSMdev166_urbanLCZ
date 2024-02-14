@@ -1,0 +1,2 @@
+add_subdirectory(ACSpinup_test)
+add_subdirectory(tillage_test)
