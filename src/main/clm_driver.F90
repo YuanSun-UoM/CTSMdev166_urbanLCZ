@@ -465,9 +465,6 @@ contains
        call clm_fates%InterpFileInputs(bounds_proc)
     end if
 
-    ! Get time varying urban data
-    call urbantv_inst%urbantv_interp(bounds_proc)
-
     ! When LAI streams are being used
     ! NOTE: This call needs to happen outside loops over nclumps (as streams are not threadsafe)
     if (doalb .and. use_lai_streams) then
