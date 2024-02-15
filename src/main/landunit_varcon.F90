@@ -87,7 +87,6 @@ contains
     allocate(landunit_names(max_lunit)) 
     call set_landunit_names()
 
-
   end subroutine landunit_varcon_init
 
   !-----------------------------------------------------------------------
@@ -162,6 +161,7 @@ contains
     if (any(landunit_names == not_set)) then
        call shr_sys_abort(trim(subname)//': Not all landunit names set')
     end if
+
   end subroutine set_landunit_names
 
 end module landunit_varcon
