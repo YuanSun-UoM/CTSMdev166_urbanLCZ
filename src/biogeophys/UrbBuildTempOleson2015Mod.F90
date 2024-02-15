@@ -848,19 +848,6 @@ contains
          if (abs(enrgy_bal_roof(l)) > .10_r8 ) then
            write (iulog,*) 'urban inside roof energy balance error ',enrgy_bal_roof(l)
            write (iulog,*) 'clm model is stopping'
-           write (iulog,*) 'qrd_roof', qrd_roof(l)
-           write (iulog,*) 'qcv_roof', qcv_roof(l)
-           write (iulog,*) 'hcv_roofi', hcv_roofi(l)
-           write (iulog,*) 't_roof_inner', t_roof_inner(l)
-           write (iulog,*) 't_roof_innerl', t_roof_innerl(l)
-           write (iulog,*) 't_roof_inner_bef', t_roof_inner_bef(l)
-           write (iulog,*) 't_roof_innerl_bef', t_roof_innerl_bef(l)
-           write (iulog,*) 't_building', t_building(l)
-           write (iulog,*) 't_building_bef', t_building_bef(l)
-           write (iulog,*) 'tk_roof_innerl', tk_roof_innerl(l)
-           write (iulog,*) 'zi_roof_innerl', zi_roof_innerl(l)
-           write (iulog,*) 'z_roof_innerl', z_roof_innerl(l)
-           write (iulog,*) 'qcd_roof', qcd_roof(l)
            call endrun(subgrid_index=l, subgrid_level=subgrid_level_landunit)
          end if
 
