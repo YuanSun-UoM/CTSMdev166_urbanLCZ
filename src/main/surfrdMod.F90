@@ -450,8 +450,6 @@ contains
     end do
     if ( found ) then
        write(iulog,*)'surfrd error: patch cover>100 for nl=',nindx
-       write(iulog,*)'patch cover=',pctspec(nl)
-       write(iulog,*)'patch cover=',pctwet(nl), pctlak(nl), pcturb_tot(nl), pctgla(nl)
        call endrun(msg=errMsg(sourcefile, __LINE__))
     end if
 
