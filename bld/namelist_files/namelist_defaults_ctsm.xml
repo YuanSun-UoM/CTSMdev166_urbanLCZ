@@ -1116,39 +1116,39 @@ attributes from the config_cache.xml file (with keys converted to upper-case).
 </finidat>
 
 <!-- for present day simulations - year 2000 -->
-<fsurdat hgrid="48x96"     sim_year="2000" use_crop=".false." irrigate=".true." use_lcz=".false.">
+<fsurdat hgrid="48x96"     sim_year="2000" use_crop=".false." irrigate=".true."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_48x96_hist_16pfts_Irrig_CMIP6_simyr2000_c190214.nc</fsurdat>
-<fsurdat hgrid="0.9x1.25"  sim_year="2000" use_crop=".false." irrigate=".true." use_vichydro=".true." use_lcz=".false.">
+<fsurdat hgrid="0.9x1.25"  sim_year="2000" use_crop=".false." irrigate=".true." use_vichydro=".true."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_0.9x1.25_hist_16pfts_Irrig_CMIP6_simyr2000_c190214.nc</fsurdat>
-<fsurdat hgrid="0.9x1.25"  sim_year="2000" use_crop=".false." irrigate=".true." use_lcz=".false.">
+<fsurdat hgrid="0.9x1.25"  sim_year="2000" use_crop=".false." irrigate=".true."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_0.9x1.25_hist_16pfts_Irrig_CMIP6_simyr2000_c190214.nc</fsurdat>
-<fsurdat hgrid="1.9x2.5"   sim_year="2000" use_crop=".false." irrigate=".true." use_vichydro=".true." use_lcz=".false.">
+<fsurdat hgrid="1.9x2.5"   sim_year="2000" use_crop=".false." irrigate=".true." use_vichydro=".true."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_1.9x2.5_hist_16pfts_Irrig_CMIP6_simyr2000_c190304.nc</fsurdat>
-<fsurdat hgrid="1.9x2.5"   sim_year="2000" use_crop=".false." irrigate=".true." use_lcz=".false.">
+<fsurdat hgrid="1.9x2.5"   sim_year="2000" use_crop=".false." irrigate=".true."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_1.9x2.5_hist_16pfts_Irrig_CMIP6_simyr2000_c190304.nc</fsurdat>
-<fsurdat hgrid="4x5"       sim_year="2000" use_crop=".false." irrigate=".true." use_lcz=".false.">
+<fsurdat hgrid="4x5"       sim_year="2000" use_crop=".false." irrigate=".true."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_4x5_hist_16pfts_Irrig_CMIP6_simyr2000_c190214.nc</fsurdat>
-<fsurdat hgrid="10x15"     sim_year="2000" use_crop=".false." irrigate=".true." use_vichydro=".true." use_lcz=".false.">
+<fsurdat hgrid="10x15"     sim_year="2000" use_crop=".false." irrigate=".true." use_vichydro=".true."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_10x15_hist_16pfts_Irrig_CMIP6_simyr2000_c190214.nc</fsurdat>
-<fsurdat hgrid="10x15"     sim_year="2000" use_crop=".false." irrigate=".true." use_lcz=".false.">
+<fsurdat hgrid="10x15"     sim_year="2000" use_crop=".false." irrigate=".true."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_10x15_hist_16pfts_Irrig_CMIP6_simyr2000_c190214.nc</fsurdat>
 
-<fsurdat hgrid="ne30np4"     sim_year="2000" use_crop=".false." irrigate=".true." use_lcz=".false.">
+<fsurdat hgrid="ne30np4"     sim_year="2000" use_crop=".false." irrigate=".true."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_ne30np4_hist_16pfts_Irrig_CMIP6_simyr2000_c190303.nc</fsurdat>
-<fsurdat hgrid="ne16np4"     sim_year="2000" use_crop=".false." irrigate=".true." use_lcz=".false.">
+<fsurdat hgrid="ne16np4"     sim_year="2000" use_crop=".false." irrigate=".true."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_ne16np4_hist_16pfts_Irrig_CMIP6_simyr2000_c190214.nc</fsurdat>
 
-<fsurdat hgrid="0.125nldas2" sim_year="2000" use_crop=".false." irrigate=".true." use_lcz=".false.">
+<fsurdat hgrid="0.125nldas2" sim_year="2000" use_crop=".false." irrigate=".true."">
 lnd/clm2/surfdata_map/surfdata_0.125nldas2_hist_16pfts_Irrig_CMIP6_simyr2005_c190412.nc</fsurdat>
 
 <fsurdat hgrid="1x1_brazil"    sim_year="2000">
 lnd/clm2/surfdata_map/ctsm5.1.dev116/surfdata_1x1_brazil_hist_78pfts_CMIP6_simyr2000_c230123.nc</fsurdat>
 
-<fsurdat hgrid="5x5_amazon"    sim_year="2000" use_crop=".false." irrigate=".true." use_lcz=".false.">
+<fsurdat hgrid="5x5_amazon"    sim_year="2000" use_crop=".false." irrigate=".true."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_5x5_amazon_hist_16pfts_Irrig_CMIP6_simyr2000_c190214.nc</fsurdat>
 
 <!-- Needed for SCAM (Single Column Atmosphere Model) -->
-<fsurdat hgrid="64x128"      sim_year="2000" use_crop=".false." irrigate=".true." use_lcz=".false."
+<fsurdat hgrid="64x128"      sim_year="2000" use_crop=".false." irrigate=".true.""
 >lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_64x128_hist_16pfts_Irrig_CMIP6_simyr2000_c190214.nc</fsurdat>
 
 <!-- Crop surface datasets -->
@@ -1162,15 +1162,15 @@ lnd/clm2/surfdata_map/release-clm5.0.30/surfdata_C96_hist_78pfts_CMIP6_simyr2000
 lnd/clm2/surfdata_map/release-clm5.0.30/surfdata_C48_hist_78pfts_CMIP6_simyr2000_c200317.nc</fsurdat>
 <fsurdat hgrid="C24"  sim_year="2000">
 lnd/clm2/surfdata_map/release-clm5.0.30/surfdata_C24_hist_78pfts_CMIP6_simyr2000_c200317.nc</fsurdat>
-<fsurdat hgrid="0.9x1.25"  sim_year="2000" use_crop=".true." use_vichydro=".false." use_lcz=".false.">
+<fsurdat hgrid="0.9x1.25"  sim_year="2000" use_crop=".true." use_vichydro=".false."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_0.9x1.25_hist_78pfts_CMIP6_simyr2000_c190214.nc</fsurdat>
-<fsurdat hgrid="1.9x2.5"   sim_year="2000" use_crop=".true." use_vichydro=".false." use_lcz=".false.">
+<fsurdat hgrid="1.9x2.5"   sim_year="2000" use_crop=".true." use_vichydro=".false."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_1.9x2.5_hist_78pfts_CMIP6_simyr2000_c190304.nc</fsurdat>
 <fsurdat hgrid="hcru_hcru"   sim_year="2000">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_360x720cru_78pfts_CMIP6_simyr2000_c170824.nc</fsurdat>
 <fsurdat hgrid="0.125x0.125"  sim_year="2000" use_crop=".true." >
 lnd/clm2/surfdata_map/release-clm5.0.24/surfdata_0.125x0.125_hist_78pfts_CMIP6_simyr2005_c190624.nc</fsurdat>
-<fsurdat hgrid="10x15"     sim_year="2000" use_crop=".true." use_vichydro=".false." use_lcz=".false.">
+<fsurdat hgrid="10x15"     sim_year="2000" use_crop=".true." use_vichydro=".false."">
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_10x15_hist_78pfts_CMIP6_simyr2000_c190214.nc</fsurdat>
 <fsurdat hgrid="4x5"       sim_year="2000" use_crop=".true." >
 lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_4x5_hist_78pfts_CMIP6_simyr2000_c190214.nc</fsurdat>
@@ -1906,13 +1906,6 @@ use_crop=".true.">lnd/clm2/surfdata_map/ctsm5.1.dev052/landuse.timeseries_mpasa1
 <popdensmapalgo use_fates=".true." hgrid="1x1_asphaltjungleNJ" >nn</popdensmapalgo>
 <popdensmapalgo use_fates=".true." hgrid="5x5_amazon"          >nn</popdensmapalgo>
 
-<!-- LCZ Landunit -->
-<use_lcz>.false.</use_lcz>
-
-<!-- LCZ fsurdat -->
-<fsurdat hgrid="0.9x1.25"  sim_year="2000" use_crop=".false." irrigate=".true." use_lcz=".true.">
-lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_0.9x1.25_hist_16pfts_Irrig_CMIP6_simyr2000_240205.nc</fsurdat>
-
 <!-- Urban time varying streams namelist defaults -->
 <stream_year_first_urbantv phys="clm5_1"  sim_year_range="1850-2100" >2015</stream_year_first_urbantv>
 <stream_year_last_urbantv  phys="clm5_1"  sim_year_range="1850-2100" >2106</stream_year_last_urbantv>
@@ -1950,35 +1943,20 @@ lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_0.9x1.25_hist_16pfts_Irrig_CMIP
 <stream_year_first_urbantv sim_year="constant" sim_year_range="1850-2000" >1850</stream_year_first_urbantv>
 <stream_year_last_urbantv  sim_year="constant" sim_year_range="1850-2000" >2106</stream_year_last_urbantv>
 
-<stream_fldfilename_urbantv phys="clm5_1"  hgrid="0.9x1.25" use_lcz=".false."
+<stream_fldfilename_urbantv phys="clm5_1"  hgrid="0.9x1.25""
 >lnd/clm2/urbandata/CLM50_tbuildmax_Oleson_2016_0.9x1.25_simyr1849-2106_c160923.nc</stream_fldfilename_urbantv>
-<stream_meshfile_urbantv    phys="clm5_1"  hgrid="0.9x1.25" use_lcz=".false."
+<stream_meshfile_urbantv    phys="clm5_1"  hgrid="0.9x1.25""
 >lnd/clm2/urbandata/CLM50_tbuildmax_Oleson_2016_0.9x1_ESMFmesh_cdf5_100621.nc</stream_meshfile_urbantv>
 
-<stream_fldfilename_urbantv phys="clm5_0" hgrid="0.9x1.25" use_lcz=".false."
+<stream_fldfilename_urbantv phys="clm5_0" hgrid="0.9x1.25""
 >lnd/clm2/urbandata/CLM50_tbuildmax_Oleson_2016_0.9x1.25_simyr1849-2106_c160923.nc</stream_fldfilename_urbantv>
-<stream_meshfile_urbantv    phys="clm5_0"  hgrid="0.9x1.25" use_lcz=".false."
+<stream_meshfile_urbantv    phys="clm5_0"  hgrid="0.9x1.25""
 >lnd/clm2/urbandata/CLM50_tbuildmax_Oleson_2016_0.9x1_ESMFmesh_cdf5_100621.nc</stream_meshfile_urbantv>
 
-<stream_fldfilename_urbantv phys="clm4_5" hgrid="0.9x1.25" use_lcz=".false."
+<stream_fldfilename_urbantv phys="clm4_5" hgrid="0.9x1.25""
 >lnd/clm2/urbandata/CLM45_tbuildmax_Oleson_2016_0.9x1.25_simyr1849-2106_c160923.nc</stream_fldfilename_urbantv>
-<stream_meshfile_urbantv    phys="clm4_5"  hgrid="0.9x1.25" use_lcz=".false."
+<stream_meshfile_urbantv    phys="clm4_5"  hgrid="0.9x1.25""
 >lnd/clm2/urbandata/CLM50_tbuildmax_Oleson_2016_0.9x1_ESMFmesh_cdf5_100621.nc</stream_meshfile_urbantv>
-
-<stream_fldfilename_urbantvlcz phys="clm5_1"  hgrid="0.9x1.25" use_lcz=".true."
->lnd/clm2/urbandata/CLM50_tbuildmax_Oleson_2016_0.9x1.25_simyr1849-2106_c230205.nc</stream_fldfilename_urbantvlcz>
-<stream_meshfile_urbantvlcz    phys="clm5_1"  hgrid="0.9x1.25" use_lcz=".true."
->lnd/clm2/urbandata/CLM50_tbuildmax_Oleson_2016_0.9x1_ESMFmesh_cdf5_100621.nc</stream_meshfile_urbantvlcz>
-
-<stream_fldfilename_urbantvlcz phys="clm5_0" hgrid="0.9x1.25" use_lcz=".true."
->lnd/clm2/urbandata/CLM50_tbuildmax_Oleson_2016_0.9x1.25_simyr1849-2106_c230205.nc</stream_fldfilename_urbantvlcz>
-<stream_meshfile_urbantvlcz    phys="clm5_0"  hgrid="0.9x1.25" use_lcz=".true."
->lnd/clm2/urbandata/CLM50_tbuildmax_Oleson_2016_0.9x1_ESMFmesh_cdf5_100621.nc</stream_meshfile_urbantvlcz>
-
-<stream_fldfilename_urbantvlcz phys="clm4_5" hgrid="0.9x1.25" use_lcz=".true."
->lnd/clm2/urbandata/CLM45_tbuildmax_Oleson_2016_0.9x1.25_simyr1849-2106_c230205.nc</stream_fldfilename_urbantvlcz>
-<stream_meshfile_urbantvlcz    phys="clm4_5"  hgrid="0.9x1.25" use_lcz=".true."
->lnd/clm2/urbandata/CLM50_tbuildmax_Oleson_2016_0.9x1_ESMFmesh_cdf5_100621.nc</stream_meshfile_urbantvlcz>
 
 <urbantvmapalgo >nn</urbantvmapalgo>
 
@@ -2841,4 +2819,9 @@ lnd/clm2/surfdata_map/release-clm5.0.18/surfdata_0.9x1.25_hist_16pfts_Irrig_CMIP
 <use_original_tillage_phases>.false.</use_original_tillage_phases>
 <max_tillage_depth>0.26d00</max_tillage_depth>
 
+<!-- =========================================  -->
+<!-- Defaults for urban lcz landuni             -->
+<!-- =========================================  -->
+<use_lcz>.false.</use_lcz>
+	
 </namelist_defaults>
