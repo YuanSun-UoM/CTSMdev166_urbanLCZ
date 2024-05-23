@@ -18,11 +18,13 @@ module subgridMod
   use landunit_varcon, only : istcrop, istdlak, istwet, isturb_tbd, isturb_hd, isturb_md
   use glcBehaviorMod , only : glc_behavior_type
   use FatesInterfaceTypesMod, only : fates_maxElementsPerSite
+!YS
   use clm_varctl     , only : use_lcz
   use landunit_varcon, only : istcrop, istdlak, istwet
   use landunit_varcon, only : isturb_lcz1, isturb_lcz2, isturb_lcz3, isturb_lcz4, &
                               isturb_lcz5, isturb_lcz6, isturb_lcz7, &
                               isturb_lcz8, isturb_lcz9, isturb_lcz10
+!YS                              
   implicit none
   private   
   save
@@ -37,6 +39,7 @@ module subgridMod
   public :: subgrid_get_info_urban_tbd
   public :: subgrid_get_info_urban_hd
   public :: subgrid_get_info_urban_md
+!YS
   public :: subgrid_get_info_urban_lcz1
   public :: subgrid_get_info_urban_lcz2
   public :: subgrid_get_info_urban_lcz3
@@ -47,6 +50,7 @@ module subgridMod
   public :: subgrid_get_info_urban_lcz8
   public :: subgrid_get_info_urban_lcz9
   public :: subgrid_get_info_urban_lcz10
+!YS    
   public :: subgrid_get_info_lake
   public :: subgrid_get_info_wetland
   public :: subgrid_get_info_glacier_mec
@@ -89,6 +93,8 @@ contains
     ! atm_topo is arbitrary for the sake of getting these counts. We don't have a true
     ! atm_topo value at the point of this call, so use 0.
     real(r8), parameter :: atm_topo = 0._r8
+
+
     !------------------------------------------------------------------------------
 
     npatches = 0
@@ -98,7 +104,21 @@ contains
 
     call subgrid_get_info_natveg(gi, npatches_temp, ncols_temp, nlunits_temp)
     call accumulate_counters()
-   
+
+    ! call this after natveg call because we allocate space for
+    ! FATES cohorts based on the number of naturally vegetated columns
+    ! and nothing else
+    call subgrid_get_info_cohort(gi, ncols_temp, ncohorts)
+
+!YS    call subgrid_get_info_urban_tbd(gi, npatches_temp, ncols_temp, nlunits_temp)
+!YS    call accumulate_counters()
+
+!YS    call subgrid_get_info_urban_hd(gi, npatches_temp, ncols_temp, nlunits_temp)
+!YS    call accumulate_counters()
+
+!YS    call subgrid_get_info_urban_md(gi, npatches_temp, ncols_temp, nlunits_temp)
+!YS    call accumulate_counters()
+!YS
     if (.not. use_lcz) then
        call subgrid_get_info_urban_tbd(gi, npatches_temp, ncols_temp, nlunits_temp)
        call accumulate_counters()
@@ -127,8 +147,8 @@ contains
        call accumulate_counters()
        call subgrid_get_info_urban_lcz10(gi, npatches_temp, ncols_temp, nlunits_temp)
        call accumulate_counters()
-    end if  
-
+    end if
+!YS
     call subgrid_get_info_lake(gi, npatches_temp, ncols_temp, nlunits_temp)
     call accumulate_counters()
 
@@ -142,8 +162,6 @@ contains
     call subgrid_get_info_crop(gi, npatches_temp, ncols_temp, nlunits_temp)
     call accumulate_counters()
    
-    call subgrid_get_info_cohort(gi,ncohorts)
-
   contains
     subroutine accumulate_counters
       ! Accumulate running sums of patches, columns and landunits.
@@ -166,6 +184,8 @@ contains
     !
     ! !USES
     use clm_varpar, only : natpft_lb, natpft_ub
+    use clm_instur, only : ncolumns_hillslope
+    use clm_varctl, only : use_hillslope
     !
     ! !ARGUMENTS:
     integer, intent(in)  :: gi        ! grid cell index
@@ -189,9 +209,16 @@ contains
     end do
 
     if (npatches > 0) then
-       ! Assume that the vegetated landunit has one column
-       ncols = 1
        nlunits = 1
+       if (use_hillslope) then
+          ! ensure ncols is > 0
+          ncols = max(ncolumns_hillslope(gi),1)
+       else
+          ncols = 1
+       endif
+       ! Assume that each PFT present in the grid cell is present in every column
+       npatches = ncols*npatches
+
     else
        ! As noted in natveg_patch_exists, we expect a naturally vegetated landunit in
        ! every grid cell. This means that npatches should be at least 1 in every grid
@@ -255,7 +282,7 @@ contains
 
   ! -----------------------------------------------------------------------------
 
-  subroutine subgrid_get_info_cohort(gi, ncohorts)
+  subroutine subgrid_get_info_cohort(gi, ncols, ncohorts)
     !
     ! !DESCRIPTION:
     ! Obtain cohort counts per each gridcell.
@@ -265,6 +292,7 @@ contains
     !
     ! !ARGUMENTS:
     integer, intent(in)  :: gi        ! grid cell index
+    integer, intent(in)  :: ncols     ! number of nat veg columns in this grid cell
     integer, intent(out) :: ncohorts  ! number of cohorts in this grid cell
     !
     ! !LOCAL VARIABLES:
@@ -283,10 +311,9 @@ contains
     ! restart vector will just be a little sparse.
     ! -------------------------------------------------------------------------
     
-    ncohorts = fates_maxElementsPerSite
+    ncohorts = ncols*fates_maxElementsPerSite
     
  end subroutine subgrid_get_info_cohort
-
 
   !-----------------------------------------------------------------------
   subroutine subgrid_get_info_urban_tbd(gi, npatches, ncols, nlunits)
@@ -350,7 +377,7 @@ contains
     call subgrid_get_info_urban(gi, isturb_md, npatches, ncols, nlunits)
 
   end subroutine subgrid_get_info_urban_md
-  
+!YS
   subroutine subgrid_get_info_urban_lcz1(gi, npatches, ncols, nlunits)
     !
     ! !DESCRIPTION:
@@ -559,7 +586,7 @@ contains
     call subgrid_get_info_urban(gi, isturb_lcz10, npatches, ncols, nlunits)
 
   end subroutine subgrid_get_info_urban_lcz10 
-
+!YS
   !-----------------------------------------------------------------------
   subroutine subgrid_get_info_urban(gi, ltype, npatches, ncols, nlunits)
     !
@@ -813,11 +840,11 @@ contains
     !
     ! !DESCRIPTION:
     ! Returns true if a land unit for lakes should be created in memory
-    ! which is defined for gridcells which will grow lake, given by haslake
+    ! which is defined for gridcells which will grow lake, given by pct_lake_max
     ! 
     ! !USES:
     use dynSubgridControlMod , only : get_do_transient_lakes
-    use clm_instur           , only : haslake
+    use clm_instur           , only : pct_lake_max
     !
     ! !ARGUMENTS:
     logical :: exists  ! function result
@@ -829,10 +856,10 @@ contains
     !-----------------------------------------------------------------------
 
     if (get_do_transient_lakes()) then
-       ! To support dynamic landunits, we initialise a lake land unit in each grid cell in which there are lakes. 
-       ! This is defined by the haslake variable
+       ! To support dynamic landunits, we initialise a lake land unit in
+       ! each grid cell in which there are lakes as defined by pct_lake_max
        
-       if (haslake(gi)) then
+       if (pct_lake_max(gi) > 0._r8) then
             exists = .true.
        else
             exists = .false.

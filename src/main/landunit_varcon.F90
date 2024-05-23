@@ -6,7 +6,9 @@ module landunit_varcon
   !
   ! !USES:
 #include "shr_assert.h"
-  use clm_varctl      , only : use_lcz
+!YS
+  use clm_varctl   , only : use_lcz
+!YS  
   !
   !
   ! !PUBLIC TYPES:
@@ -19,9 +21,7 @@ module landunit_varcon
 
   integer, parameter, public :: istsoil    = 1  !soil         landunit type (natural vegetation)
   integer, parameter, public :: istcrop    = 2  !crop         landunit type
-  ! Landunit 3 currently unused (used to be non-multiple elevation class glacier type:
-  ! istice, and landunit 4 was istice_mec; now they are combined into a single landunit
-  ! type, 4)
+  integer, parameter, public :: istocn     = 3  !ocean        landunit type
   integer, parameter, public :: istice     = 4  !land ice landunit type
   integer, parameter, public :: istdlak    = 5  !deep lake    landunit type (now used for all lakes)
   integer, parameter, public :: istwet     = 6  !wetland      landunit type (swamp, marsh, etc.)
@@ -29,7 +29,9 @@ module landunit_varcon
   integer, parameter, public :: isturb_MIN = 7  !minimum urban type index
   integer, parameter, public :: isturb_tbd = 7  !urban tbd    landunit type
   integer, parameter, public :: isturb_hd  = 8  !urban hd     landunit type
-  integer, parameter, public :: isturb_md  = 9  !urban md     landunit type 
+  integer, parameter, public :: isturb_md  = 9  !urban md     landunit type
+!YS  integer, parameter, public :: isturb_MAX = 9  !maximum urban type index
+!YS
   ! 10 lCZs urban landunits  
   integer, parameter, public :: isturb_lcz1  = 7     !LCZ 1      urban landunit type
   integer, parameter, public :: isturb_lcz2  = 8     !LCZ 2      urban landunit type
@@ -41,11 +43,20 @@ module landunit_varcon
   integer, parameter, public :: isturb_lcz8  = 14    !LCZ 8      urban landunit type
   integer, parameter, public :: isturb_lcz9  = 15    !LCZ 9      urban landunit type
   integer, parameter, public :: isturb_lcz10 = 16    !LCZ 10     urban landunit type
-  integer, parameter, public :: landunit_name_length = 40  ! max length of landunit names
   integer, public :: max_lunit   !maximum value that lun%itype can have
   integer, public :: isturb_MAX  !maximum urban type index
-  integer, public :: numurbl 
-  character(len=landunit_name_length), allocatable, public  :: landunit_names(:)  ! name of each landunit type 
+  integer, public :: numurbl
+!YS  
+!YS   integer, parameter, public :: max_lunit  = 9  !maximum value that lun%itype can have
+!YS                                         !(i.e., largest value in the above list)
+
+  integer, parameter, public                   :: landunit_name_length = 40  ! max length of landunit names
+  character(len=landunit_name_length), public  :: landunit_names(max_lunit)  ! name of each landunit type
+
+  ! parameters that depend on the above constants
+
+!YS  integer, parameter, public :: numurbl = isturb_MAX - isturb_MIN + 1   ! number of urban landunits
+
   !
   ! !PUBLIC MEMBER FUNCTIONS:
   public :: landunit_varcon_init  ! initialize constants in this module
@@ -72,9 +83,9 @@ contains
     
     character(len=*), parameter :: subname = 'landunit_varcon_init'
     !-----------------------------------------------------------------------
-    
+!YS    
     ! parameters that depend on the above constants
-    
+
     if (.not. use_lcz) then
        max_lunit = 9
        isturb_MAX = 9
@@ -82,9 +93,10 @@ contains
        max_lunit = 16
        isturb_MAX = 16
     end if 
-    
+
     numurbl = isturb_MAX - isturb_MIN + 1 
-    allocate(landunit_names(max_lunit)) 
+    allocate(landunit_names(max_lunit))
+!YS
     call set_landunit_names()
 
   end subroutine landunit_varcon_init
@@ -135,11 +147,14 @@ contains
 
     landunit_names(istsoil) = 'vegetated_or_bare_soil'
     landunit_names(istcrop) = 'crop'
-    landunit_names(istcrop+1) = unused
+    landunit_names(istocn) = 'ocean'
     landunit_names(istice) = 'landice'
     landunit_names(istdlak) = 'deep_lake'
     landunit_names(istwet) = 'wetland'
-   
+!YS    landunit_names(isturb_tbd) = 'urban_tbd'
+!YS    landunit_names(isturb_hd) = 'urban_hd'
+!YS    landunit_names(isturb_md) = 'urban_md'
+!YS    
     if (.not. use_lcz) then
        landunit_names(isturb_tbd) = 'urban_tbd'
        landunit_names(isturb_hd) = 'urban_hd'
@@ -157,7 +172,7 @@ contains
        landunit_names(isturb_lcz10) = 'urban_lcz10'
        !landunit_names(isturb_lcz11) = 'urban_lcz11'
     end if
-
+!YS
     if (any(landunit_names == not_set)) then
        call shr_sys_abort(trim(subname)//': Not all landunit names set')
     end if

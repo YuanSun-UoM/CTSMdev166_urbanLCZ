@@ -61,10 +61,12 @@ contains
     use landunit_varcon   , only : isturb_tbd, isturb_hd, isturb_md, istcrop
     use clm_varctl        , only : use_fates
     use shr_const_mod     , only : SHR_CONST_PI
+!YS
     use clm_varctl        , only : use_lcz
     use landunit_varcon   , only : isturb_lcz1,isturb_lcz2,isturb_lcz3,isturb_lcz4,&
                                    isturb_lcz5,isturb_lcz6,isturb_lcz7,isturb_lcz8,&
                                    isturb_lcz9,isturb_lcz10
+!YS                                       
     !
     ! !ARGUMENTS:
     type(bounds_type)      , intent(in) :: bounds_clump
@@ -136,6 +138,13 @@ contains
             ltype=istcrop, gi=gdc, li=li, ci=ci, pi=pi)
     end do
 
+    ! Determine urban tall building district landunit
+!YS    do gdc = bounds_clump%begg,bounds_clump%endg
+!YS       call set_landunit_urban( &
+!YS            ltype=isturb_tbd, gi=gdc, li=li, ci=ci, pi=pi)
+
+!YS    end do
+!YS
     if (.not. use_lcz) then
        ! Determine urban tall building district landunit
        do gdc = bounds_clump%begg,bounds_clump%endg
@@ -143,23 +152,21 @@ contains
             ltype=isturb_tbd, gi=gdc, li=li, ci=ci, pi=pi)
        end do
 
-       ! Determine urban high density landunit
        do gdc = bounds_clump%begg,bounds_clump%endg
           call set_landunit_urban( &
             ltype=isturb_hd, gi=gdc, li=li, ci=ci, pi=pi)
        end do
 
-       ! Determine urban medium density landunit
        do gdc = bounds_clump%begg,bounds_clump%endg
           call set_landunit_urban( &
             ltype=isturb_md, gi=gdc, li=li, ci=ci, pi=pi)
-       end do
+       end do 
     else if (use_lcz) then
        do gdc = bounds_clump%begg,bounds_clump%endg
           call set_landunit_urban( &
                   ltype=isturb_lcz1, gi=gdc, li=li, ci=ci, pi=pi)
        end do
-   
+
        ! Determine urban LCZ2 landunit
        do gdc = bounds_clump%begg,bounds_clump%endg
           call set_landunit_urban( &
@@ -189,7 +196,7 @@ contains
           call set_landunit_urban( &
                   ltype=isturb_lcz6, gi=gdc, li=li, ci=ci, pi=pi)
        end do
-      
+
        ! Determine urban LCZ7 landunit
        do gdc = bounds_clump%begg,bounds_clump%endg
           call set_landunit_urban( &
@@ -213,7 +220,19 @@ contains
           call set_landunit_urban( &
                   ltype=isturb_lcz10, gi=gdc, li=li, ci=ci, pi=pi)
        end do
-    end if   
+    end if       
+!YS
+    ! Determine urban high density landunit
+!YS    do gdc = bounds_clump%begg,bounds_clump%endg
+!YS      call set_landunit_urban( &
+!YS           ltype=isturb_hd, gi=gdc, li=li, ci=ci, pi=pi)
+!YS    end do
+
+    ! Determine urban medium density landunit
+!YS    do gdc = bounds_clump%begg,bounds_clump%endg
+!YS       call set_landunit_urban( &
+!YS            ltype=isturb_md, gi=gdc, li=li, ci=ci, pi=pi)
+!YS    end do
 
     ! Determine lake, wetland and glacier landunits 
     do gdc = bounds_clump%begg,bounds_clump%endg
@@ -280,7 +299,7 @@ contains
     integer , intent(inout) :: pi                ! patch index
     !
     ! !LOCAL VARIABLES:
-    integer  :: m                                ! index
+    integer  :: m, ci2                           ! index
     integer  :: npatches                         ! number of patches in landunit
     integer  :: ncols
     integer  :: nlunits
@@ -288,6 +307,7 @@ contains
     integer  :: ncols_added                      ! number of columns actually added
     integer  :: nlunits_added                    ! number of landunits actually added
     real(r8) :: wtlunit2gcell                    ! landunit weight in gridcell
+    real(r8) :: wtcol2lunit                      ! column weight in landunit
     real(r8) :: p_wt                             ! patch weight (0-1)
     !------------------------------------------------------------------------
 
@@ -304,31 +324,37 @@ contains
     if (nlunits > 0) then
        call add_landunit(li=li, gi=gi, ltype=ltype, wtgcell=wtlunit2gcell)
        nlunits_added = nlunits_added + 1
-       
-       ! Assume one column on the landunit
-       call add_column(ci=ci, li=li, ctype=1, wtlunit=1.0_r8)
-       ncols_added = ncols_added + 1
 
-       ! For FATES: the total number of patches may not match what is in the surface
-       ! file, and therefor the weighting can't be used. The weightings in
-       ! wt_nat_patch may be meaningful (like with fixed biogeography), but they
-       ! they need a mapping table to connect to the allocated patches (in fates)
-       ! so the wt_nat_patch array is not applicable to these area weights
-       ! A subsequent call, via the clmfates interface will update these weights
-       ! by using said mapping table
-       
-       do m = natpft_lb,natpft_ub
-          if (natveg_patch_exists(gi, m)) then
-             if(use_fates .and. .not.use_fates_sp)then
-                p_wt = 1.0_r8/real(natpft_size,r8)
-             else
-                p_wt = wt_nat_patch(gi,m)
+       ! Potentially create multiple columns (e.g., for hillslope hydrology), but each
+       ! with the same PFT breakdown.
+       !
+       ! Set column weight arbitrarily for now. If we have multiple columns because we're
+       ! using hillslope hydrology, then col%wtlunit will be modified in InitHillslope.
+       wtcol2lunit = 1.0_r8/real(ncols,r8)
+       do ci2 = 1,ncols
+          call add_column(ci=ci, li=li, ctype=1, wtlunit=wtcol2lunit)
+          ncols_added = ncols_added + 1
+
+          ! For FATES: the total number of patches may not match what is in the surface
+          ! file, and therefor the weighting can't be used. The weightings in
+          ! wt_nat_patch may be meaningful (like with fixed biogeography), but they
+          ! they need a mapping table to connect to the allocated patches (in fates)
+          ! so the wt_nat_patch array is not applicable to these area weights
+          ! A subsequent call, via the clmfates interface will update these weights
+          ! by using said mapping table
+
+          do m = natpft_lb,natpft_ub
+             if (natveg_patch_exists(gi, m)) then
+                if(use_fates .and. .not.use_fates_sp)then
+                   p_wt = 1.0_r8/real(natpft_size,r8)
+                else
+                   p_wt = wt_nat_patch(gi,m)
+                end if
+                call add_patch(pi=pi, ci=ci, ptype=m, wtcol=p_wt)
+                npatches_added = npatches_added + 1
              end if
-             call add_patch(pi=pi, ci=ci, ptype=m, wtcol=p_wt)
-             npatches_added = npatches_added + 1
-          end if
+          end do
        end do
-
     end if
 
     SHR_ASSERT_FL(nlunits_added == nlunits, sourcefile, __LINE__)
@@ -579,6 +605,7 @@ contains
     use subgridMod      , only : subgrid_get_info_urban_md
     use UrbanParamsType , only : urbinp
     use pftconMod       , only : noveg
+!YS  
     use clm_varctl      , only : use_lcz
     use landunit_varcon , only : isturb_lcz1, isturb_lcz2, isturb_lcz3, &
                                  isturb_lcz4, isturb_lcz5, isturb_lcz6, &
@@ -588,7 +615,8 @@ contains
                                  subgrid_get_info_urban_lcz3, subgrid_get_info_urban_lcz4, &
                                  subgrid_get_info_urban_lcz5, subgrid_get_info_urban_lcz6, &
                                  subgrid_get_info_urban_lcz7, subgrid_get_info_urban_lcz8, &
-                                 subgrid_get_info_urban_lcz9, subgrid_get_info_urban_lcz10                             
+                                 subgrid_get_info_urban_lcz9, subgrid_get_info_urban_lcz10 
+!YS                                     
     !
     ! !ARGUMENTS:
     integer , intent(in)    :: ltype             ! landunit type
@@ -612,6 +640,22 @@ contains
     !------------------------------------------------------------------------
 
     ! Set decomposition properties, and set variables specific to urban density type
+
+!YS    select case (ltype)
+!YS    case (isturb_tbd)
+!YS       call subgrid_get_info_urban_tbd(gi, &
+!YS            npatches=npatches, ncols=ncols, nlunits=nlunits)
+!YS    case (isturb_hd)
+!YS       call subgrid_get_info_urban_hd(gi, &
+!YS            npatches=npatches, ncols=ncols, nlunits=nlunits)
+!YS    case (isturb_md)
+!YS       call subgrid_get_info_urban_md(gi, &
+!YS            npatches=npatches, ncols=ncols, nlunits=nlunits)
+!YS   case default
+!YS       write(iulog,*)' set_landunit_urban: unknown ltype: ', ltype
+!YS       call endrun(msg=errMsg(sourcefile, __LINE__))
+!YS   end select
+!YS
     if (.not. use_lcz) then
        select case (ltype)
        case (isturb_tbd)
@@ -664,7 +708,7 @@ contains
             call endrun(msg=errMsg(sourcefile, __LINE__))
        end select
     end if
-    
+!YS    
     if (npatches > 0) then
 
        wtlunit2gcell = wt_lunit(gi, ltype)

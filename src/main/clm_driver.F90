@@ -465,6 +465,9 @@ contains
        call clm_fates%InterpFileInputs(bounds_proc)
     end if
 
+    ! Get time varying urban data
+    call urbantv_inst%urbantv_interp(bounds_proc)
+
     ! When LAI streams are being used
     ! NOTE: This call needs to happen outside loops over nclumps (as streams are not threadsafe)
     if (doalb .and. use_lai_streams) then
@@ -508,7 +511,7 @@ contains
             atm_topo = atm2lnd_inst%forc_topo_grc(bounds_clump%begg:bounds_clump%endg))
 
        call downscale_forcings(bounds_clump, &
-            topo_inst, atm2lnd_inst, water_inst%wateratm2lndbulk_inst, &
+            topo_inst, atm2lnd_inst, surfalb_inst, water_inst%wateratm2lndbulk_inst, &
             eflx_sh_precip_conversion = energyflux_inst%eflx_sh_precip_conversion_col(bounds_clump%begc:bounds_clump%endc))
 
        call set_atm2lnd_water_tracers(bounds_clump, &
@@ -1089,7 +1092,7 @@ contains
             filter(nc)%num_hydrologyc, filter(nc)%hydrologyc, &
             filter(nc)%num_urbanc, filter(nc)%urbanc,         &
             filter(nc)%num_do_smb_c, filter(nc)%do_smb_c,     &
-            atm2lnd_inst, glc2lnd_inst, temperature_inst,     &
+            glc2lnd_inst, temperature_inst,                   &
             soilhydrology_inst, soilstate_inst, water_inst%waterstatebulk_inst, &
             water_inst%waterdiagnosticbulk_inst, water_inst%waterbalancebulk_inst, &
             water_inst%waterfluxbulk_inst, water_inst%wateratm2lndbulk_inst, &

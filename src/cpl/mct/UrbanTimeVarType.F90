@@ -11,12 +11,14 @@ module UrbanTimeVarType
   use decompMod       , only : bounds_type, subgrid_level_landunit
   use clm_varctl      , only : iulog, inst_name
   use landunit_varcon , only : isturb_MIN, isturb_MAX
-  use clm_varctl      , only : use_lcz 
   use clm_varcon      , only : spval
   use LandunitType    , only : lun
   use GridcellType    , only : grc
   use mct_mod
   use shr_strdata_mod , only : shr_strdata_type
+!YS 
+  use clm_varctl      , only : use_lcz 
+!YS   
   !
   implicit none
   save
@@ -29,18 +31,18 @@ module UrbanTimeVarType
 
      real(r8), public, pointer     :: t_building_max(:)    ! lun maximum internal building air temperature (K)
      type(shr_strdata_type)        :: sdat_urbantv         ! urban time varying input data stream
-   
    contains
 
      ! !PUBLIC MEMBER FUNCTIONS:
      procedure, public :: Init              ! Allocate and initialize urbantv
      procedure, public :: urbantv_init      ! Initialize urban time varying stream
      procedure, public :: urbantv_interp    ! Interpolate urban time varying stream
-   
+
   end type urbantv_type
 
   !-----------------------------------------------------------------------
   character(15), private :: stream_var_name(isturb_MIN:isturb_MAX)
+
   character(len=*), parameter, private :: sourcefile = &
        __FILE__
 
@@ -104,10 +106,12 @@ contains
    use domainMod        , only : ldomain
    use shr_infnan_mod   , only : nan => shr_infnan_nan, assignment(=)
    use landunit_varcon  , only : isturb_TBD, isturb_HD, isturb_MD
+!YS
    use landunit_varcon  , only : isturb_LCZ1, isturb_LCZ2, isturb_LCZ3, &
                                  isturb_LCZ4, isturb_LCZ5, isturb_LCZ6, &
                                  isturb_LCZ7, isturb_LCZ8, isturb_LCZ9, &
                                  isturb_LCZ10
+!YS                                    
    use lnd_set_decomp_and_domain , only : gsmap_global
    !
    ! !ARGUMENTS:
@@ -187,7 +191,10 @@ contains
 
    ! create the field list for these urbantv fields...use in shr_strdata_create
    stream_var_name(:)          = "NOT_SET"
-   
+!YS   stream_var_name(isturb_TBD) = urbantvString//"TBD"
+!YS   stream_var_name(isturb_HD)  = urbantvString//"HD"
+!YS   stream_var_name(isturb_MD)  = urbantvString//"MD"
+!YS
    if(.not. use_lcz) then
      stream_var_name(isturb_TBD) = urbantvString//"TBD"
      stream_var_name(isturb_HD)  = urbantvString//"HD"
@@ -204,7 +211,7 @@ contains
      stream_var_name(isturb_lcz9) = urbantvString//"LCZ9"
      stream_var_name(isturb_lcz10) = urbantvString//"LCZ10"  
    end if
-   
+!YS   
    fldList = ""
    do ifield = isturb_MIN, isturb_MAX
       call shr_string_listAppend( fldList, stream_var_name(ifield) )

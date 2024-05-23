@@ -15,6 +15,7 @@ module LandunitType
   !   7  => (isturb_tbd) urban tbd
   !   8  => (isturb_hd)  urban hd
   !   9  => (isturb_md)  urban md
+!YS
   ! ! Modified urban landunits with 10 LCZs 
   !   7  => (isturb_lcz1)  urban lcz1
   !   8  => (isturb_lcz2)  urban lcz2    
@@ -26,6 +27,7 @@ module LandunitType
   !   14 => (isturb_lcz8)  urban lcz8    
   !   15 => (isturb_lcz9)  urban lcz9
   !   16 => (isturb_lcz10) urban lcz10
+!YS    
   !
   use shr_kind_mod   , only : r8 => shr_kind_r8
   use shr_infnan_mod , only : nan => shr_infnan_nan, assignment(=)
@@ -43,6 +45,7 @@ module LandunitType
      integer , pointer :: coli         (:) ! beginning column index per landunit
      integer , pointer :: colf         (:) ! ending column index for each landunit
      integer , pointer :: ncolumns     (:) ! number of columns for each landunit
+     integer , pointer :: nhillslopes  (:) ! number of hillslopes for each landunit
      integer , pointer :: patchi       (:) ! beginning patch index for each landunit
      integer , pointer :: patchf       (:) ! ending patch index for each landunit
      integer , pointer :: npatches     (:) ! number of patches for each landunit
@@ -62,6 +65,13 @@ module LandunitType
      real(r8), pointer :: ht_roof      (:) ! height of urban roof (m)
      real(r8), pointer :: z_0_town     (:) ! urban landunit momentum roughness length (m)
      real(r8), pointer :: z_d_town     (:) ! urban landunit displacement height (m)
+
+     ! hillslope variables
+     real(r8), pointer :: stream_channel_depth   (:) ! stream channel bankfull depth (m)
+     real(r8), pointer :: stream_channel_width   (:) ! stream channel bankfull width (m)
+     real(r8), pointer :: stream_channel_length  (:) ! stream channel length (m)
+     real(r8), pointer :: stream_channel_slope   (:) ! stream channel slope (m/m)
+     real(r8), pointer :: stream_channel_number  (:) ! number of channels in landunit
 
    contains
 
@@ -93,6 +103,7 @@ contains
     allocate(this%coli         (begl:endl)); this%coli      (:) = ispval
     allocate(this%colf         (begl:endl)); this%colf      (:) = ispval
     allocate(this%ncolumns     (begl:endl)); this%ncolumns  (:) = ispval
+    allocate(this%nhillslopes  (begl:endl)); this%nhillslopes(:) = ispval
     allocate(this%patchi       (begl:endl)); this%patchi    (:) = ispval
     allocate(this%patchf       (begl:endl)); this%patchf    (:) = ispval
     allocate(this%npatches     (begl:endl)); this%npatches  (:) = ispval
@@ -113,6 +124,13 @@ contains
     allocate(this%z_0_town     (begl:endl)); this%z_0_town     (:) = nan
     allocate(this%z_d_town     (begl:endl)); this%z_d_town     (:) = nan
 
+    ! Hillslope variables initialized in HillslopeHydrologyMod
+    allocate(this%stream_channel_depth(begl:endl));  this%stream_channel_depth   (:) = nan
+    allocate(this%stream_channel_width(begl:endl));  this%stream_channel_width   (:) = nan
+    allocate(this%stream_channel_length(begl:endl)); this%stream_channel_length  (:) = nan
+    allocate(this%stream_channel_slope(begl:endl));  this%stream_channel_slope   (:) = nan
+    allocate(this%stream_channel_number(begl:endl)); this%stream_channel_number  (:) = nan
+
   end subroutine Init
 
   !------------------------------------------------------------------------
@@ -130,6 +148,7 @@ contains
     deallocate(this%coli         )
     deallocate(this%colf         )
     deallocate(this%ncolumns     )
+    deallocate(this%nhillslopes  )
     deallocate(this%patchi       )
     deallocate(this%patchf       )
     deallocate(this%npatches     )
@@ -145,7 +164,11 @@ contains
     deallocate(this%wtlunit_roof )
     deallocate(this%z_0_town     )
     deallocate(this%z_d_town     )
-
+    deallocate(this%stream_channel_depth)
+    deallocate(this%stream_channel_width)
+    deallocate(this%stream_channel_length)
+    deallocate(this%stream_channel_slope)
+    deallocate(this%stream_channel_number)
   end subroutine Clean
 
 end module LandunitType
