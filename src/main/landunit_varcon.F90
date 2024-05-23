@@ -51,8 +51,8 @@ module landunit_varcon
 !YS                                         !(i.e., largest value in the above list)
 
   integer, parameter, public                   :: landunit_name_length = 40  ! max length of landunit names
-  character(len=landunit_name_length), public  :: landunit_names(max_lunit)  ! name of each landunit type
-
+!YS  character(len=landunit_name_length), public  :: landunit_names(max_lunit)  ! name of each landunit type
+  character(len=landunit_name_length), allocatable, public  :: landunit_names(:)  ! name of each landunit type 
   ! parameters that depend on the above constants
 
 !YS  integer, parameter, public :: numurbl = isturb_MAX - isturb_MIN + 1   ! number of urban landunits
